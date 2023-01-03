@@ -27,7 +27,7 @@ app.get("/api/:date?", function (req, res) {
 	if (!req.params.date) {
 		var today = new Date();
 
-		const unixKey = Math.floor(new Date(today).getTime() / 1000);
+		const unixKey = Math.floor(new Date(today).getTime());
 		const utcKey = new Date(today).toUTCString();
 
 		res.json({ unix: unixKey, utc: utcKey });
@@ -44,7 +44,8 @@ app.get("/api/:date?", function (req, res) {
 		res.json({ error: "Invalid Date" });
 	}
 
-	const unixKey = Math.floor(new Date(date).getTime() / 1000);
+	let unixKey = Math.floor(new Date(date).getTime());
+
 	const utcKey = new Date(date).toUTCString();
 
 	res.json({ unix: unixKey, utc: utcKey });
