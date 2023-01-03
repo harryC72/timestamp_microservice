@@ -71,7 +71,7 @@ app.get("/api/:date?", function (req, res) {
 	if (!test) unixKey = Math.floor(new Date(date).getTime());
 
 	let utcKey;
-	if (test) utcKey = new Date(test).toUTCString();
+	if (test) utcKey = new Date(date * 1000).toUTCString();
 	if (!test) utcKey = new Date(date).toUTCString();
 
 	const resObj = { unix: unixKey, utc: utcKey };
