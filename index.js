@@ -27,28 +27,26 @@ app.get("/api/:date?", function (req, res) {
 	if (!req.params.date) {
 		var today = new Date();
 
-		const unixKey = Math.floor(new Date(today).getTime());
-		const utcKey = new Date(today).toUTCString();
+		const todayUnixKey = Math.floor(new Date(today).getTime());
+		const todayUtcKey = new Date(today).toUTCString();
 
-		res.json({ unix: unixKey, utc: utcKey });
+		return res.json({ unix: todayUnixKey, utc: todayUtcKey });
 	}
 	let date = req.params.date;
 
-	console.log("DATE", date);
-
 	let test = new Date(date);
 
-	// console.log("TEST", test);
-
 	if (test && test == "Invalid Date") {
-		res.json({ error: "Invalid Date" });
+		return res.json({ error: "Invalid Date" });
 	}
 
-	let unixKey = Math.floor(new Date(date).getTime());
+	let unixKey = Math.floor(test.getTime());
 
-	const utcKey = new Date(date).toUTCString();
+	let utcKey = new Date(test.toUTCString());
 
-	res.json({ unix: unixKey, utc: utcKey });
+	const resObj = { unix: unixKey, utc: utcKey };
+
+	return res.json(resObj);
 });
 
 const port = process.env.PORT || 5000;
