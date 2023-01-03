@@ -48,8 +48,7 @@ app.get("/api/:date?", function (req, res) {
 		var today = new Date();
 
 		const todayUnixKey = Math.floor(new Date(today).getTime());
-		let todayUtcKey = new Date(today);
-		todayUtcKey = ISODateString(todayUtcKey);
+		let todayUtcKey = new Date(today).toUTCString();
 		return res.json({ unix: todayUnixKey, utc: todayUtcKey });
 	}
 	let date = req.params.date;
@@ -62,9 +61,7 @@ app.get("/api/:date?", function (req, res) {
 
 	let unixKey = Math.floor(test.getTime());
 
-	let utcKey = new Date(date);
-
-	utcKey = ISODateString(utcKey);
+	let utcKey = new Date(date).toUTCString();
 
 	const resObj = { unix: unixKey, utc: utcKey };
 
