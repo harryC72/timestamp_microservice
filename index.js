@@ -24,6 +24,18 @@ app.get("/api/hello", function (req, res) {
 });
 
 app.get("/api/:date?", function (req, res) {
+	let date = req.params.date?.toString();
+
+	let result;
+
+	if (date !== undefined) {
+		result = new Date(date) !== "Invalid Date";
+	}
+
+	if (!result) {
+		return { error: "Invalid Date" };
+	}
+
 	if (!req.params.date) {
 		var today = new Date();
 
@@ -31,18 +43,6 @@ app.get("/api/:date?", function (req, res) {
 		const utcKey = new Date(today).toUTCString();
 
 		res.json({ unix: unixKey, utc: utcKey });
-	}
-
-	let date = req.params.date?.toString();
-
-	let result;
-
-	if (date !== undefined) {
-		result = new Date(date) !== "Invalid Date" && !isNaN(new Date(date));
-	}
-
-	if (!result) {
-		return { error: "Invalid Date" };
 	}
 
 	if (result && date !== undefined) {
