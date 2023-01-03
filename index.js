@@ -61,8 +61,6 @@ app.get("/api/:date?", function (req, res) {
 	if (result && result == "Invalid Date") {
 		test = new Date(parseInt(req.params.date));
 
-		console.log("TEST", test);
-
 		if (test && test == "Invalid Date") {
 			return res.json({ error: "Invalid Date" });
 		} else return res.json({ unix: parseInt(date), utc: test.toUTCString() });
@@ -71,9 +69,7 @@ app.get("/api/:date?", function (req, res) {
 
 	let utcKey = new Date(date).toUTCString();
 
-	const resObj = { unix: unixKey, utc: utcKey };
-
-	return res.json(resObj);
+	return res.json({ unix: unixKey, utc: utcKey });
 });
 
 const port = process.env.PORT || 5000;
