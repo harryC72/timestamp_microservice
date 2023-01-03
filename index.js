@@ -34,27 +34,20 @@ app.get("/api/:date?", function (req, res) {
 	}
 	let date = req.params.date;
 
-	if (date) {
-		date = date.toString();
+	console.log("DATE", date);
+
+	let test = new Date(date);
+
+	// console.log("TEST", test);
+
+	if (test && test == "Invalid Date") {
+		res.json({ error: "Invalid Date" });
 	}
 
-	let result;
+	const unixKey = Math.floor(new Date(date).getTime() / 1000);
+	const utcKey = new Date(date).toUTCString();
 
-	if (date !== undefined) {
-		result = new Date(date) !== "Invalid Date";
-	}
-
-	if (!result) {
-		return { error: "Invalid Date" };
-	}
-
-	if (result && date !== undefined) {
-		const unixKey = Math.floor(new Date(date).getTime() / 1000);
-		const utcKey = new Date(date).toUTCString();
-
-		res.json({ unix: unixKey, utc: utcKey });
-	}
-	console.log("result", result);
+	res.json({ unix: unixKey, utc: utcKey });
 });
 
 const port = process.env.PORT || 5000;
