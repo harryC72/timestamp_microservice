@@ -53,15 +53,25 @@ app.get("/api/:date?", function (req, res) {
 	}
 	let date = req.params.date;
 
-	let test = new Date(date);
+	let result = new Date(date);
 
-	if (test && test == "Invalid Date") {
-		return res.json({ error: "Invalid Date" });
+	let test;
+
+	if (result && result == "Invalid Date") {
+		test = date * 1000;
+
+		test = new Date(test);
+
+		if (test && test == "Invalid Date") {
+			return res.json({ error: "Invalid Date" });
+		}
 	}
 
 	let unixKey = Math.floor(test.getTime());
 
-	let utcKey = new Date(date).toUTCString();
+	let utcKey;
+	if (test) utcKey = new Date(test).toUTCString();
+	if (!test) utcKey = new Date(date).toUTCString();
 
 	const resObj = { unix: unixKey, utc: utcKey };
 
