@@ -28,6 +28,7 @@ function ISODateString(d) {
 // enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
 // so that your API is remotely testable by FCC
 var cors = require("cors");
+const e = require("express");
 app.use(cors({ optionsSuccessStatus: 200 })); // some legacy browsers choke on 204
 
 // http://expressjs.com/en/starter/static-files.html
@@ -58,21 +59,17 @@ app.get("/api/:date?", function (req, res) {
 	let test;
 
 	if (result && result == "Invalid Date") {
-		test = date * 1000;
+		test = new Date(parseInt(req.params.date));
 
-		test = new Date(test);
+		console.log("TEST", test);
 
 		if (test && test == "Invalid Date") {
 			return res.json({ error: "Invalid Date" });
-		}
+		} else return res.json({ unix: date, utc: test.toUTCString() });
 	}
-	let unixKey;
-	if (test) unixKey = date;
-	if (!test) unixKey = Math.floor(new Date(date).getTime());
+	let unixKey = Math.floor(new Date(date).getTime());
 
-	let utcKey;
-	if (test) utcKey = new Date(date * 1000).toUTCString();
-	if (!test) utcKey = new Date(date).toUTCString();
+	let utcKey = new Date(date).toUTCString();
 
 	const resObj = { unix: unixKey, utc: utcKey };
 
