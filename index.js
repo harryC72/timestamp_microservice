@@ -5,6 +5,26 @@
 var express = require("express");
 var app = express();
 
+function ISODateString(d) {
+	function pad(n) {
+		return n < 10 ? "0" + n : n;
+	}
+	return (
+		d.getUTCFullYear() +
+		"-" +
+		pad(d.getUTCMonth() + 1) +
+		"-" +
+		pad(d.getUTCDate()) +
+		"T" +
+		pad(d.getUTCHours()) +
+		":" +
+		pad(d.getUTCMinutes()) +
+		":" +
+		pad(d.getUTCSeconds()) +
+		"Z"
+	);
+}
+
 // enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
 // so that your API is remotely testable by FCC
 var cors = require("cors");
@@ -28,8 +48,8 @@ app.get("/api/:date?", function (req, res) {
 		var today = new Date();
 
 		const todayUnixKey = Math.floor(new Date(today).getTime());
-		const todayUtcKey = new Date(today).toUTCString();
-
+		let todayUtcKey = new Date(today);
+		todayUtcKey = ISODateString(todayUtcKey);
 		return res.json({ unix: todayUnixKey, utc: todayUtcKey });
 	}
 	let date = req.params.date;
@@ -42,7 +62,9 @@ app.get("/api/:date?", function (req, res) {
 
 	let unixKey = Math.floor(test.getTime());
 
-	let utcKey = new Date(test.toUTCString());
+	let utcKey = new Date(date);
+
+	utcKey = ISODateString(utcKey);
 
 	const resObj = { unix: unixKey, utc: utcKey };
 
