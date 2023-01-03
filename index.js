@@ -65,7 +65,7 @@ app.get("/api/:date?", function (req, res) {
 
 		if (test && test == "Invalid Date") {
 			return res.json({ error: "Invalid Date" });
-		} else return res.json({ unix: date, utc: test.toUTCString() });
+		} else return res.json({ unix: parseInt(date), utc: test.toUTCString() });
 	}
 	let unixKey = Math.floor(new Date(date).getTime());
 
